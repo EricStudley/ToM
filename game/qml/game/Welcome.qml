@@ -17,14 +17,14 @@ Item{
         width:1432.5
         height:1152
         z:100
-        source:"/Users/Eric/Documents/game/qml/game/misc/scroll.png"
+        source:"misc/scroll.png"
         fillMode: Image.Stretch
         Image{
             id:welcomeText
             anchors.centerIn: parent
             width:900
             height:600
-            source:"/Users/Eric/Documents/game/qml/game/misc/welcome.png"
+            source:"misc/welcome.png"
         }
         Text{
             anchors.top: welcomeText.bottom

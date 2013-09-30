@@ -5,6 +5,8 @@ Item{
     height:1200
     width:1920
 
+    property bool playerMoving
+
     property int characterMiddleX: character.x+(character.width/2)
     property int characterMiddleY: character.y+(character.height/2)
 
@@ -120,8 +122,16 @@ Item{
                 case 7: fireSpell(7,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouse)); break;
             }
         }
-        onClicked:{
-            moveCharacter(mouse.x, mouse.y)
+        onPressed:{
+            playerMoving=true
+            moveCharacter(mouse)
+            console.log("X: "+mouse.x)
+            console.log("Y: "+mouse.y)
+        }
+        onReleased: playerMoving=false
+        onPositionChanged: {
+            if(playerMoving)
+                moveCharacter(mouse)
         }
     }
 
@@ -168,53 +178,67 @@ Item{
         event.accepted = true;
     }
 
-    function moveCharacter(moveX, moveY){
+    function moveCharacter(move){
         character.stop()
-        var xDif=(Math.abs((character.x)-(moveX)))
-        var yDif=(Math.abs((character.y)-(moveY)))
-        character.playerSpeed=xDif>yDif?xDif*2:yDif*2
-        if(moveX<characterMiddleX){
-            character.playerDirection="left"
+        var direction=getRotation(characterMiddleX,characterMiddleY,move)
+        var xDif=(Math.abs((character.x)-(move.x)))
+        var yDif=(Math.abs((character.y)-(move.y)))
+        var pythag=Math.sqrt((xDif^2)+(yDif^2))
+        if(pythag<100)
+            character.playerSpeed=pythag*40
+        else
+            character.playerSpeed=pythag*30
+        if(direction<45 || direction>315){
+            character.playerDirection="up"
         }
-        else{
+        else if(direction>45 && direction<135){
             character.playerDirection="right"
         }
-        if(moveX<=505){
-            character.x=505
-            if(moveY<=145){
-                character.y=145
-            }
-            else if(moveY>=915){
-                character.y=915
-            }
-            else{
-                character.y=moveY-(character.height/2)
-            }
-        }
-        else if(moveX>=1325){
-            character.x=1325
-            if(moveY<=145){
-                character.y=145
-            }
-            else if(moveY>=915){
-                character.y=915
-            }
-            else{
-                character.y=moveY-(character.height/2)
-            }
+        else if(direction>135 && direction<225){
+            character.playerDirection="down"
         }
         else{
-            character.x=moveX-(character.width/2)
-            if(moveY<=145){
-                character.y=145
-            }
-            else if(moveY>=915){
-                character.y=915
-            }
-            else{
-                character.y=moveY-(character.height/2)
-            }
+            character.playerDirection="left"
         }
+
+//        if(moveX<=505){
+//            character.x=505
+//            if(moveY<=145){
+//                character.y=145
+//            }
+//            else if(moveY>=915){
+//                character.y=915
+//            }
+//            else{
+//                character.y=moveY-(character.height/2)
+//            }
+//        }
+//        else if(moveX>=1325){
+//            character.x=1325
+//            if(moveY<=145){
+//                character.y=145
+//            }
+//            else if(moveY>=915){
+//                character.y=915
+//            }
+//            else{
+//                character.y=moveY-(character.height/2)
+//            }
+//        }
+//        else{
+//            character.x=moveX-(character.width/2)
+//            if(moveY<=145){
+//                character.y=145
+//            }
+//            else if(moveY>=915){
+//                character.y=915
+//            }
+//            else{
+//                character.y=moveY-(character.height/2)
+//            }
+//        }
+        character.x=move.x-(character.width/2)
+        character.y=move.y-(character.height/2)
 
         spell.resetPointX=characterMiddleX
         spell.resetPointY=characterMiddleY

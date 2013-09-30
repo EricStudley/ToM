@@ -9,7 +9,7 @@ Image {
     property string playerDirection
     height: 130
     width:90
-    source:"/Users/Eric/Documents/game/qml/game/characters/player_"+spellType+"_"+playerDirection+".png"
+    source:"characters/player_"+spellType+"_"+playerDirection+".png"
     fillMode: Image.PreserveAspectFit
 
     Behavior on x{ enabled:true; PropertyAnimation{  duration: playerSpeed}}

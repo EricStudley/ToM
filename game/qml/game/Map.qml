@@ -5,7 +5,7 @@ Item{
 
     Image{
         width:maxSize
-        source:"/Users/Eric/Documents/game/qml/game/maps/dungeon.png"
+        source:"maps/dungeon.png"
         fillMode: Image.PreserveAspectFit
         anchors.centerIn: parent
         z:10

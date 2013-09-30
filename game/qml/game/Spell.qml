@@ -8,7 +8,7 @@ Image {
     property int resetPointY
 
     opacity:1
-    source:"/Users/Eric/Documents/game/qml/game/misc/spell_"+spellType+".png"
+    source:"misc/spell_"+spellType+".png"
     fillMode: Image.PreserveAspectFit
 
     Behavior on opacity{PropertyAnimation { duration: 300} }

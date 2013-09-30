@@ -11,7 +11,7 @@ Item{
 
     Image{
         anchors.fill: parent
-        source:"/Users/Eric/Documents/game/qml/game/characters/ogre2.png"
+        source:"characters/ogre2.png"
         fillMode: Image.PreserveAspectFit
     }
 
@@ -21,7 +21,7 @@ Item{
         height:200
         anchors.centerIn: parent
         visible:frozen
-        source:"/Users/Eric/Documents/game/qml/game/misc/spellEffect_1.png"
+        source:"misc/spellEffect_1.png"
     }
 
     Timer{
