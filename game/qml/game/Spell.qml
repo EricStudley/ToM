@@ -11,7 +11,7 @@ Image{
     property int resetPointY
 
 
-    Behavior on opacity{PropertyAnimation{duration:300}}
+    Behavior on opacity{PropertyAnimation{duration:200}}
     Behavior on x{PropertyAnimation{easing.type:Easing.InCubic;duration:200}}
     Behavior on y{PropertyAnimation{easing.type:Easing.InCubic;duration:200}}
 }

@@ -5,6 +5,8 @@ Item{
     width:1920
     height:1200
 
+    property int mouseHoverX
+    property int mouseHoverY
     property bool playerMoving
     property int mapTopLeftX:map.x
     property int mapTopLeftY:map.y
@@ -86,7 +88,7 @@ Item{
                     enemy.lastY=parent.y
                     parent.playerTargetX=parent.width>character.width?character.x-((enemy.width-character.width)/2):character.x+((character.width-enemy.width)/2)
                     parent.playerTargetY=parent.height>character.height?character.y-((enemy.height-character.height)/2):character.y+((character.height-enemy.height)/2)
-                    if(checkCollision(character,parent)){
+                    if(checkCollision(spell,parent)){
                         enemy.frozen=true
                     }
                 }
@@ -109,17 +111,6 @@ Item{
         anchors.fill:parent
         enabled:!spellbook.spellbookMode
         hoverEnabled:true
-        onHoveredChanged:{
-            switch(spellbook.selectedSpell){
-            case 1: fireSpell(1,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouse));break;
-            case 2: fireSpell(2,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouse));break;
-            case 3: fireSpell(3,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouse));break;
-            case 4: fireSpell(4,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouse));break;
-            case 5: fireSpell(5,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouse));break;
-            case 6: fireSpell(6,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouse));break;
-            case 7: fireSpell(7,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouse));break;
-            }
-        }
         onPressed:{
             playerMoving=true
             moveCharacter(mouse)
@@ -128,8 +119,17 @@ Item{
         }
         onReleased:playerMoving=false
         onPositionChanged:{
+            mouseHoverX=mouse.x
+            mouseHoverY=mouse.y
             if(playerMoving)
                 moveCharacter(mouse)
+        }
+    }
+
+    Keys.onPressed: {
+        if (event.key == Qt.Key_X) {
+            fireSpell(spellbook.selectedSpell,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouseHoverX,mouseHoverY));
+            event.accepted = true;
         }
     }
 
@@ -140,7 +140,7 @@ Item{
 
     function moveCharacter(move){
         character.stop()
-        var direction=getRotation(characterMiddleX,characterMiddleY,move)
+        var direction=getRotation(characterMiddleX,characterMiddleY,move.x,move.y)
         var xDif=(Math.abs((character.x)-(move.x)))
         var yDif=(Math.abs((character.y)-(move.y)))
         var pythag=Math.sqrt((xDif^2)+(yDif^2))
@@ -182,26 +182,26 @@ Item{
 
     function fireSpell(spellType, rotation){
         spell.spellType=spellType
-        spell.x=(character.x+(character.width/2))+(200*Math.sin(rotation*(Math.PI/180)))
-        spell.y=(character.y+(character.height/2))+-(200*Math.cos(rotation*(Math.PI/180)))
+        spell.x=(character.x+(character.width/2))+(200*Math.sin(rotation*(Math.PI/180)))//-(spell.width/2)
+        spell.y=(character.y+(character.height/2))+-(200*Math.cos(rotation*(Math.PI/180)))//-(spell.height/2)
     }
 
     function spawnEnemy(){
         var enemy=enemyComp.createObject(root,{"playerTargetX":characterMiddleX,"playerTargetY":characterMiddleY})
     }
 
-    function getRotation(x, y, point){
-        if(point.x>=x){
-            if(point.y>=y)
-                return 180-(Math.atan((point.x-x)/(point.y-y))*(180/Math.PI))
+    function getRotation(x, y, pointx, pointy){
+        if(pointx>=x){
+            if(pointy>=y)
+                return 180-(Math.atan((pointx-x)/(pointy-y))*(180/Math.PI))
             else
-                return Math.atan((point.x-x)/(y-point.y))*(180/Math.PI)
+                return Math.atan((pointx-x)/(y-pointy))*(180/Math.PI)
         }
         else{
-            if(point.y>y)
-                return 180+(Math.atan((x-point.x)/(point.y-y))*(180/Math.PI))
+            if(pointy>y)
+                return 180+(Math.atan((x-pointx)/(pointy-y))*(180/Math.PI))
             else
-                return 360-(Math.atan((x-point.x)/(y-point.y))*(180/Math.PI))
+                return 360-(Math.atan((x-pointx)/(y-pointy))*(180/Math.PI))
         }
     }
 }
