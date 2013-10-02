@@ -35,6 +35,7 @@ Item{
         id:character
         x:mapMiddleX-(character.width/2)
         y:mapMiddleY-(character.height/2)
+        z:50
         playerDirection:"left"
         spellType:spellbook.selectedSpell
 
@@ -48,12 +49,6 @@ Item{
                 character.lastY=parent.y
             }
         }
-        onXChanged:{
-            spell.resetPointX=characterMiddleX
-        }
-        onYChanged:{
-            spell.resetPointY=characterMiddleY
-        }
     }
 
     Spellbook{
@@ -64,8 +59,9 @@ Item{
 
     Spell{
         id:spell
-        resetPointX:characterMiddleX
-        resetPointY:characterMiddleY
+        x:characterMiddleX
+        y:characterMiddleY
+        z:25
     }
 
     Component{
@@ -89,7 +85,8 @@ Item{
                     parent.playerTargetX=parent.width>character.width?character.x-((enemy.width-character.width)/2):character.x+((character.width-enemy.width)/2)
                     parent.playerTargetY=parent.height>character.height?character.y-((enemy.height-character.height)/2):character.y+((character.height-enemy.height)/2)
                     if(checkCollision(spell,parent)){
-                        enemy.frozen=true
+                        enemy.hitBySpell=true
+                        enemy.hitByEffect=spellbook.selectedSpell
                     }
                 }
             }
@@ -114,8 +111,6 @@ Item{
         onPressed:{
             playerMoving=true
             moveCharacter(mouse)
-            console.log("X: "+mouse.x)
-            console.log("Y: "+mouse.y)
         }
         onReleased:playerMoving=false
         onPositionChanged:{
@@ -128,7 +123,15 @@ Item{
 
     Keys.onPressed: {
         if (event.key == Qt.Key_X) {
+            spell.opacity=1
             fireSpell(spellbook.selectedSpell,getRotation((character.x-(character.width/2)),(character.y+(character.height/2)),mouseHoverX,mouseHoverY));
+            event.accepted = true;
+        }
+    }
+
+    Keys.onReleased: {
+        if (event.key == Qt.Key_X) {
+            spell.opacity=0
             event.accepted = true;
         }
     }
@@ -160,8 +163,6 @@ Item{
         else{
             character.playerDirection="left"
         }
-        spell.resetPointX=characterMiddleX
-        spell.resetPointY=characterMiddleY
         character.x=move.x-(character.width/2)
         character.y=move.y-(character.height/2)
     }
@@ -182,8 +183,9 @@ Item{
 
     function fireSpell(spellType, rotation){
         spell.spellType=spellType
-        spell.x=(character.x+(character.width/2))+(200*Math.sin(rotation*(Math.PI/180)))//-(spell.width/2)
-        spell.y=(character.y+(character.height/2))+-(200*Math.cos(rotation*(Math.PI/180)))//-(spell.height/2)
+        spell.rotation=rotation
+        spell.x = (character.x+(character.width/2)) + (150 * Math.sin(rotation*(Math.PI/180)))-(spell.width/2)
+        spell.y = (character.y+(character.height/2)) + -(150 * Math.cos(rotation*(Math.PI/180)))-(spell.height/2)
     }
 
     function spawnEnemy(){

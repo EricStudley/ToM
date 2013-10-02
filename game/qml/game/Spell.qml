@@ -2,16 +2,25 @@ import QtQuick 2.0
 
 Image{
     id:spell
-    opacity:1
-    source:"misc/spell_"+spellType+".png"
+    opacity:0
     fillMode:Image.PreserveAspectFit
 
+    property int counter:1
     property int spellType
-    property int resetPointX
-    property int resetPointY
 
-
-    Behavior on opacity{PropertyAnimation{duration:200}}
-    Behavior on x{PropertyAnimation{easing.type:Easing.InCubic;duration:200}}
-    Behavior on y{PropertyAnimation{easing.type:Easing.InCubic;duration:200}}
+    Timer{
+        id:spellTimer
+        interval:5
+        repeat:true
+        running:true
+        onTriggered:{
+            if(counter<28){
+                parent.source="spells/spell_1_"+counter+".png"
+            }
+            else{
+                counter=1
+            }
+            counter++
+        }
+    }
 }

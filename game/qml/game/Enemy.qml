@@ -5,7 +5,8 @@ Item{
 
     property int lastX
     property int lastY
-    property bool frozen:false
+    property bool hitBySpell:false
+    property int hitByEffect
     property int playerTargetX
     property int playerTargetY
     property int enemySpeed:50
@@ -21,23 +22,23 @@ Item{
         width:200
         height:200
         anchors.centerIn:parent
-        visible:frozen
-        source:"misc/spellEffect_1.png"
+        visible:hitBySpell
+        source:"misc/spellEffect_"+hitByEffect+".png"
     }
 
     Timer{
         id:huntTimer
         interval:1
         repeat:true
-        running:!frozen
+        running:!hitBySpell
         onTriggered:{
             parent.x=playerTargetX
             parent.y=playerTargetY
         }
     }
 
+    Behavior on hitBySpell{ScriptAction{ script: stop()}}
     Behavior on x{id:xMotion;enabled:true;SmoothedAnimation{velocity:enemySpeed}}
-
     Behavior on y{id:yMotion;enabled:true;SmoothedAnimation{velocity:enemySpeed}}
 
     function stop(){
