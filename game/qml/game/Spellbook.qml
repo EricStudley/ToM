@@ -10,7 +10,7 @@ Item{
 
     Image{
         id:scroll
-        height:500
+        height:700
         z:-10
         anchors.centerIn: parent
         opacity:parent.opacity
@@ -18,6 +18,15 @@ Item{
         fillMode: Image.PreserveAspectFit
 
         Behavior on opacity{PropertyAnimation{duration:200}}
+
+        SpellDrawArea{
+            id:cell
+            width:scroll.width/2.5
+            height:scroll.height/1.5
+            anchors.centerIn: parent
+            lineWidth: 5
+            lineColor:"black"
+        }
     }
 
     Repeater{
@@ -26,8 +35,8 @@ Item{
         Image{
             opacity:spellbook.opacity
             source:"icons/spellicon_"+(modelData+1)+".png"
-            x:(scroll.x+(scroll.width/2))+(100 * Math.sin(((360/7)*(modelData+1))*(Math.PI/180)))-50
-            y:(scroll.y+(scroll.height/2))+-(100 * Math.cos(((360/7)*(modelData+1))*(Math.PI/180)))-30
+            x:(scroll.x+(scroll.width/2))+(150 * Math.sin(((360/7)*(modelData+1))*(Math.PI/180)))-50
+            y:(scroll.y+(scroll.height/2))+-(150 * Math.cos(((360/7)*(modelData+1))*(Math.PI/180)))-30
 
             Behavior on opacity{ PropertyAnimation{duration:200}}
 
@@ -40,5 +49,9 @@ Item{
                 }
             }
         }
+    }
+
+    onSpellbookModeChanged: {
+        cell.clearDrawArea()
     }
 }

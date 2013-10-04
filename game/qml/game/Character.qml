@@ -16,6 +16,11 @@ Image{
     Behavior on x{enabled:true;PropertyAnimation{duration:playerSpeed}}
     Behavior on y{enabled:true;PropertyAnimation{duration:playerSpeed}}
 
+    onXChanged: {
+        lastX=character.x
+        lastY=character.y
+    }
+
     function stop(){
         character.x=lastX
         character.y=lastY

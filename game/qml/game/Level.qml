@@ -108,11 +108,15 @@ Item{
         anchors.fill:parent
         enabled:!spellbook.spellbookMode
         hoverEnabled:true
+        z:100
         onPressed:{
             playerMoving=true
             moveCharacter(mouse)
         }
-        onReleased:playerMoving=false
+        onReleased:{
+            character.stop()
+            playerMoving=false
+        }
         onPositionChanged:{
             mouseHoverX=mouse.x
             mouseHoverY=mouse.y
@@ -147,10 +151,7 @@ Item{
         var xDif=(Math.abs((character.x)-(move.x)))
         var yDif=(Math.abs((character.y)-(move.y)))
         var pythag=Math.sqrt((xDif^2)+(yDif^2))
-        if(pythag<100)
-            character.playerSpeed=pythag*40
-        else
-            character.playerSpeed=pythag*30
+        character.playerSpeed=pythag*40
         if(direction<45||direction>315){
             character.playerDirection="up"
         }
