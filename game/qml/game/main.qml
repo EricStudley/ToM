@@ -1,11 +1,19 @@
 import QtQuick 2.0
+import "Settings.js" as Settings
+import "Logic.js" as Logic
 
 Item{
+    focus: true
+    Welcome{
+        id:welcome
+        visible: true
+        width: Settings.screenWidth
+        height: Settings.screenHeight
+    }
 
     Loader{
         id:windowLoader
-        source:"Welcome.qml"
-        focus:true
+        source:""
     }
 
     Rectangle{
@@ -20,5 +28,22 @@ Item{
         anchors.right:parent.right
     }
 
-    Keys.onReturnPressed:windowLoader.source="Level.qml"
+    Keys.onUpPressed:{
+        if(welcome.selector>0)
+            welcome.selector-=1
+    }
+
+    Keys.onDownPressed:{
+        if(welcome.selector<2)
+            welcome.selector+=1
+    }
+
+    Keys.onReturnPressed: {
+        switch(welcome.selector){
+        case 0: windowLoader.source="Level.qml"; break;
+        case 1: windowLoader.source="Level.qml"; break;
+        case 2: Qt.quit();
+        }
+        windowLoader.focus=true
+    }
 }

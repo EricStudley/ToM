@@ -1,9 +1,11 @@
 import QtQuick 2.0
+import "Settings.js" as Settings
+import "Logic.js" as Logic
 
 Item{
     id:root
-    width:1920
-    height:1200
+    width:Settings.screenWidth
+    height:Settings.screenHeight
 
     property int mouseHoverX
     property int mouseHoverY
@@ -95,8 +97,8 @@ Item{
 
     Timer{
         id:enemyTimer
-        interval:getRandom(10000,20000)
-        repeat:false
+        interval:Logic.getRandom(500,1000)
+        repeat:true
         running:true
         onTriggered:{
             spawnEnemy()
@@ -166,11 +168,6 @@ Item{
         }
         character.x=move.x-(character.width/2)
         character.y=move.y-(character.height/2)
-    }
-
-    function getRandom(minimum,maximum){
-        var now=new Date()
-        return Math.floor(Math.random(now.getSeconds())*(maximum-minimum+1))+minimum;
     }
 
     function checkCollision(a,b){
