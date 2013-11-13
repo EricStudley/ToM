@@ -7,7 +7,7 @@ Item {
     id: root
     width: Settings.screenWidth
     height: Settings.screenHeight
-    opacity: 0
+    opacity: 1
 
     property int selector: 0
 
@@ -18,13 +18,7 @@ Item {
 
     Item{
         Component.onCompleted:{
-            root.opacity=1
-        }
-    }
-
-    Behavior on opacity {
-        PropertyAnimation {
-            duration: 1000
+            scroll.opacity=1
         }
     }
 
@@ -59,6 +53,29 @@ Item {
         width: scroll.originalWidth * Settings.itemScale * 1.2
         height: scroll.originalHeight * Settings.itemScale * 1.2
         z:100
+        opacity:0
+
+        Behavior on opacity {
+              PropertyAnimation {
+                  duration: 1000
+              }
+         }
+
+        PropertyAnimation{
+            target:{
+                switch(selector){
+                case 0: startText; break;
+                case 1: optionsText; break;
+                case 2: quitText; break;
+                }
+            }
+            easing.type: Easing.OutSine
+            loops: Animation.Infinite
+            from: 32
+            to: 42
+            duration: 5000
+            property: "font.pointSize"
+        }
 
         NMapEffect {
             id: welcomeText
@@ -85,6 +102,14 @@ Item {
             text: "Start"
             font.pointSize: 32
             color: selector==0?"white":"black"
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    selector=0
+                    windowLoader.source="Level.qml"
+                    windowLoader.focus=true
+                }
+            }
         }
 
         Text {
@@ -95,6 +120,12 @@ Item {
             text: "Options"
             font.pointSize: 32
             color: selector==1?"white":"black"
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    selector=1
+                }
+            }
         }
 
         Text {
@@ -105,8 +136,14 @@ Item {
             text: "Quit"
             font.pointSize: 32
             color: selector==2?"white":"black"
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    selector=2
+                    Qt.quit()
+                }
+            }
         }
-
 
         Glow{
             anchors.fill: {
