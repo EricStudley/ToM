@@ -1,5 +1,6 @@
-var screenHeight=900
-var screenWidth=1600
+var screenHeight=1200
+var screenWidth=1920
+var landscape=screenWidth>screenHeight?true:false
 
 var diffuseBoost=0.0
 var lightIntensity=0.2

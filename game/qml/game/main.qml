@@ -4,46 +4,43 @@ import "Logic.js" as Logic
 
 Item{
     focus: true
-    Welcome{
-        id:welcome
-        visible: true
-        width: Settings.screenWidth
-        height: Settings.screenHeight
-    }
 
     Loader{
         id:windowLoader
-        source:""
+        source: "Welcome.qml"
+        sourceComponent: undefined
+    }
+
+    Component{
+        id: room1
+        Level{
+            rmapSource: "maps/1.png"
+            rcharSpawnX: rmapPointMX
+            rcharSpawnY: rmapPointBLY
+        }
+    }
+
+    Component{
+        id: room2
+        Level{
+            rmapSource: "maps/2.png"
+            rcharSpawnX: rmapPointMX
+            rcharSpawnY: rmapPointBLY
+        }
+    }
+
+    Component{
+        id: room3
+        Level{
+            rmapSource: "maps/3.png"
+            rcharSpawnX: rmapPointMX
+            rcharSpawnY: rmapPointBLY
+        }
     }
 
     Rectangle{
         z:-10
         anchors.fill:parent
         color:"black"
-    }
-
-    Quit{
-        z:10
-        anchors.top:parent.top
-        anchors.right:parent.right
-    }
-
-    Keys.onUpPressed:{
-        if(welcome.selector>0)
-            welcome.selector-=1
-    }
-
-    Keys.onDownPressed:{
-        if(welcome.selector<2)
-            welcome.selector+=1
-    }
-
-    Keys.onReturnPressed: {
-        switch(welcome.selector){
-        case 0: windowLoader.source="Level.qml"; break;
-        case 1: windowLoader.source="Level.qml"; break;
-        case 2: Qt.quit();
-        }
-        windowLoader.focus=true
     }
 }

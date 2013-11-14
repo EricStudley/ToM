@@ -23,7 +23,7 @@ ShaderEffect {
     property real elementPositionY: root.y
     // Optional 'colorize' effect to apply for the item, can be used for fog effect
     property color colorizeColor: "#404040"
-    property real colorizeAmount: 0.0
+    property real colorizeAmount: 0.1
     // Sizes of the original pixmap
     property real originalWidth: sourceImageItem.sourceSize.width
     property real originalHeight: sourceImageItem.sourceSize.height

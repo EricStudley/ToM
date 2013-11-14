@@ -106,7 +106,7 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     selector=0
-                    windowLoader.source="Level.qml"
+                    windowLoader.sourceComponent=room1
                     windowLoader.focus=true
                 }
             }
