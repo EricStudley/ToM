@@ -96,7 +96,7 @@ Item {
         Text {
             id: startText
             anchors.left: welcomeText.right
-            anchors.leftMargin: 5
+            anchors.leftMargin: 70
             anchors.verticalCenter: welcomeText.verticalCenter
             anchors.verticalCenterOffset: -100
             text: "Start"

@@ -76,14 +76,17 @@ Item{
             x:mapMiddleX-(enemy.width/2)
             y:map.y+(map.height/2)-500
 
+            onXChanged:{
+                enemy.lastX=enemy.x
+                enemy.lastY=enemy.y
+            }
+
             Timer{
                 id:huntTimer
                 interval:1
                 repeat:true
                 running:true
                 onTriggered:{
-                    enemy.lastX=parent.x
-                    enemy.lastY=parent.y
                     parent.playerTargetX=parent.width>character.width?character.x-((enemy.width-character.width)/2):character.x+((character.width-enemy.width)/2)
                     parent.playerTargetY=parent.height>character.height?character.y-((enemy.height-character.height)/2):character.y+((character.height-enemy.height)/2)
                     if(checkCollision(spell,parent)){
@@ -92,12 +95,24 @@ Item{
                     }
                 }
             }
+
+            Timer{
+                id:punchTimer
+                interval:1000
+                repeat:true
+                running:true
+                onTriggered:{
+                    if(checkCollision(character,parent)){
+                        character.lifeLeft-=10
+                    }
+                }
+            }
         }
     }
 
     Timer{
         id:enemyTimer
-        interval:Logic.getRandom(500,1000)
+        interval:Logic.getRandom(1000,2000)
         repeat:true
         running:true
         onTriggered:{
