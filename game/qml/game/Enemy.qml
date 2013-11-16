@@ -8,6 +8,10 @@ Item{
     width:130
     height:180
 
+    property int lifeLeft: 100
+    property bool dead:false
+    property bool beenHit:false
+
     property int lastX
     property int lastY
     property bool hitBySpell:false
@@ -40,6 +44,51 @@ Item{
             parent.x=playerTargetX
             parent.y=playerTargetY
         }
+    }
+
+    Healthbar {
+        id: healthbar
+        anchors.bottom: parent.top
+        lifeLeft: parent.lifeLeft
+        opacity: 0
+
+        Behavior on opacity{
+            SequentialAnimation{
+                PropertyAnimation{
+                    duration: 0
+                }
+                PauseAnimation {
+                    duration: 3000
+                }
+                PropertyAnimation{
+                    to: 0
+                    duration: 1000
+                }
+            }
+        }
+
+        onLifeLeftChanged: {
+            healthbar.opacity=1
+            enemy.beenHit=true
+            hitTimer.start()
+            if(lifeLeft==0){
+                enemy.destroy()
+                enemy.dead=true
+            }
+        }
+    }
+
+    Timer{
+        id:hitTimer
+        interval:2750
+        repeat:false
+        onTriggered:{
+            enemy.beenHit=false
+        }
+    }
+
+    Item{
+        Component.onCompleted: healthbar.opacity=0
     }
 
     Behavior on hitBySpell{ScriptAction{ script: stop()}}

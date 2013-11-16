@@ -18,6 +18,7 @@ Item{
         id:room
         z:10
         anchors.centerIn: parent
+        height:parent.height
         source:mapSource
         fillMode: Image.PreserveAspectFit
     }

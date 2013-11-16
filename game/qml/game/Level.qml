@@ -1,4 +1,6 @@
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
+import QtQuick.Particles 2.0
 import "Settings.js" as Settings
 import "Logic.js" as Logic
 
@@ -8,7 +10,7 @@ Item{
     height:Settings.screenHeight
 
     //FINAL
-    property string rmapSource
+    property string rmapSource:"maps/dungeon.png"
     property string rmapLeft
     property string rmapRight
     property string rmapUp
@@ -25,6 +27,7 @@ Item{
     property int rmapPointBRY: map.mapBottomRightY
     property int rmapPointMX: map.mapMiddleX
     property int rmapPointMY: map.mapMiddleY
+    property bool talentMode:false
     //
 
     property int mouseHoverX
@@ -35,10 +38,29 @@ Item{
 
     Map{
         id:map
-        width:height
+        height:parent.height
         anchors.fill:parent
         mapSource: rmapSource
     }
+
+    ExpBar{
+        id:exp
+        z:9000
+        anchors.verticalCenter: map.verticalCenter
+        anchors.left:parent.left
+        anchors.leftMargin: -100
+        value: .01
+        charging: false
+        maxLiquidRotation: 0
+        rotation: -90
+    }
+
+//    TalentTree{
+//        id: talents
+//        talentMode: true
+//        visible:root.talentMode
+//        anchors.centerIn: parent
+//    }
 
     Character{
         id:character
@@ -84,6 +106,10 @@ Item{
                 enemy.lastY=enemy.y
             }
 
+            onDeadChanged: {
+                exp.value+=.3
+            }
+
             Timer{
                 id:huntTimer
                 interval:1
@@ -95,6 +121,14 @@ Item{
                     if(Logic.checkCollision(spell,parent)){
                         enemy.hitBySpell=true
                         enemy.hitByEffect=spellbook.selectedSpell
+                        enemy.lifeLeft-=1
+//                        if(!enemy.beenHit){
+//                            var random=Logic.getRandom(1,100)
+//                            if(random<90)
+//                                enemy.lifeLeft-=Logic.getRandom(250-275)
+//                            else
+//                                enemy.lifeLeft-=Logic.getRandom(400,450)
+//                        }
                     }
                 }
             }
@@ -167,6 +201,16 @@ Item{
         event.accepted=true;
     }
 
+    Keys.onTabPressed: {
+        if(root.talentMode==false){
+            root.talentMode=true
+        }
+        else
+            root.talentMode=false
+
+        console.log(root.talentMode)
+        event.accepted=true;
+    }
 
 
     function fireSpell(spellType, rotation){

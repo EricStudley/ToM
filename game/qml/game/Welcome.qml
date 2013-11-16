@@ -14,6 +14,7 @@ Item {
     Rectangle{
         anchors.fill: parent
         color:"black"
+        z:-1000
     }
 
     Item{
@@ -106,7 +107,8 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     selector=0
-                    windowLoader.sourceComponent=room1
+                    //windowLoader.sourceComponent="Level.qml"
+                    windowLoader.source="Level.qml"
                     windowLoader.focus=true
                 }
             }

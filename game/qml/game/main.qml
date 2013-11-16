@@ -1,4 +1,6 @@
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
+import QtQuick.Particles 2.0
 import "Settings.js" as Settings
 import "Logic.js" as Logic
 
@@ -8,7 +10,6 @@ Item{
     Loader{
         id:windowLoader
         source: "Welcome.qml"
-        sourceComponent: undefined
     }
 
     Component{
