@@ -1,6 +1,7 @@
 import QtQuick 2.0
 
 /* Simple normal mapping shader */
+/* From a Qt 5 Demo */
 
 ShaderEffect {
     id: root
